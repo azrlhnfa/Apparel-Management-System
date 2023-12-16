@@ -5,7 +5,7 @@ public class App {
 
     static FileApparel fileApparel = new FileApparel();
     public static void main(String[] args) {
-        LinkedList  apparels = new LinkedList();
+        LinkedList  apparels = new LinkedList()
 
         while (true) {
             String[] userOptions = {"Employee", "Customer", "Exit"};

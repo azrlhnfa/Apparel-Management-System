@@ -15,6 +15,10 @@ public class ApparelItem {
         this.size = size;
     }
 
+    public ApparelItem(String itemCode) {
+        this.itemCode = itemCode;
+    }
+
     // Getters and Setters
 
     public String getItemCode() {
@@ -85,5 +89,51 @@ public class ApparelItem {
         return quantity * price;
     }
 
-    
+    public boolean addApparel(ApparelItem apparel, LinkedList apparels) {
+
+        boolean found = false;
+        Object data = apparels.getFirst();
+
+        while (data != null) {
+            ApparelItem temp = (ApparelItem) data;
+
+            if (temp.getItemCode().equals(apparel.getItemCode())) {
+                if (temp.getName().equals(apparel.getName())) {
+                    found = true;
+                }
+            }
+            data = apparels.getNext();
+        }
+        if (found) {
+            System.out.println("Data Already Exist!!");
+            return false;
+        }
+
+        apparels.insertAtBack(apparel);
+        return true;
+    }
+
+    public boolean removeApparel(ApparelItem apparel, LinkedList apparels) {
+
+        boolean found = false;
+        Object data = apparels.getFirst();
+
+        while (data != null) {
+            ApparelItem temp = (ApparelItem) data;
+
+            if (temp.getItemCode().equals(apparel.getItemCode())) {
+               
+                    found = true;
+                    break;
+                
+            }
+            data = apparels.getNext();
+        }
+        if (found) {
+            apparels.remove(data);
+            return true;
+        }
+        System.out.println("Data Doesn't Exist!!");
+        return false;
+    }
 }

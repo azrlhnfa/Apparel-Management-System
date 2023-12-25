@@ -1,4 +1,3 @@
-import java.util.function.Predicate;
 
 public class LinkedList
 {
@@ -109,24 +108,40 @@ return current.data;
 }
 }
 
-public void removeIf(Predicate<Object> predicate) {
+public Object remove(Object elem) {
+    Object removeItem = null;
+
     if (isEmpty()) {
-        return;
+        return removeItem;
     }
 
-    if (predicate.test(first.data)) {
+    if (first.data.equals(elem)) {
+        removeItem = first.data;
         first = first.next;
-        return;
+
+        if (first == null) {
+            last = null;
+        }
+    }
+    else {
+        current = first;
+        while (current.next != null && !current.next.data.equals(elem)) {
+            current = current.next;
+        }
+
+        // If the element is found
+        if (current.next != null) {
+            removeItem = current.next.data;
+            current.next = current.next.next;
+
+            // If the last element is removed
+            if (current.next == null) {
+                last = current;
+            }
+        }
     }
 
-    Node current = first;
-    while (current.next != null && !predicate.test(current.next.data)) {
-        current = current.next;
-    }
+    return removeItem;
 
-    if (current.next != null) {
-        current.next = current.next.next;
-    }
 }
-
 }

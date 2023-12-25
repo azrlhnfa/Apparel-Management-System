@@ -7,11 +7,14 @@ import java.util.StringTokenizer;
 
 
 public class FileApparel {
-    private static LinkedList apparels;
-    private final static String fileName = "apparels_data.txt";
+    private String fileName = "apparels_data.txt";
+
+    public FileApparel(String fileName) {
+        this.fileName = fileName;
+    }
 
     public LinkedList loadApparel() {
-        apparels = new LinkedList();
+        LinkedList apparels = new LinkedList();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -24,11 +27,11 @@ public class FileApparel {
                         double price = Double.parseDouble(token.nextToken());
                         String size = token.nextToken();
 
-                        ApparelItem app = new ApparelItem(itemCode, name, brand, quantity, price, size);
-                        apparels.insertAtBack(app);
+                        ApparelItem apparel = new ApparelItem(itemCode, name, brand, quantity, price, size);
+                        apparels.insertAtBack(apparel);
                     }
                 }
-                System.out.println("Apparel data loaded successfully.");
+                return apparels;
         }catch (IOException | NumberFormatException e) {
                 e.printStackTrace();
         } 

@@ -6,27 +6,30 @@ import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
 public class FileEmployee {
-    private LinkedList employees;
-    private final String fileName = "employee_data.txt";
+    private String fileName = "employee_data.txt";
 
+    public FileEmployee(String fileName) {
+        this.fileName = fileName;
+    }
     public LinkedList loadEmployee() {
-        employees = new LinkedList();
+        LinkedList employees = new LinkedList();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 StringTokenizer token = new StringTokenizer(line, ":");
-                if (token.countTokens() == 5) {
+                if (token.countTokens() == 6) {
                     String iD = token.nextToken();
                     String name = token.nextToken();
                     String phoneNo = token.nextToken();
                     double worksHour = Double.parseDouble(token.nextToken());
                     double salary = Double.parseDouble(token.nextToken());
+                    boolean salaryPaidStatus = Boolean.parseBoolean(token.nextToken());
 
-                    EmployeeInfo emp = new EmployeeInfo(iD, name, phoneNo, worksHour, salary);
+                    EmployeeInfo emp = new EmployeeInfo(iD, name, phoneNo, worksHour, salary, salaryPaidStatus);
                     employees.insertAtBack(emp);
                 }
             }
-            System.out.println("Employee data loaded successfully.");
+            return employees;
         }catch (IOException | NumberFormatException e) {
             e.printStackTrace();
     } 
@@ -40,7 +43,7 @@ public class FileEmployee {
                 EmployeeInfo employee = (EmployeeInfo) data;
                 writer.println(employee.getID() + ":" + employee.getName() + ":"
                                + employee.getPhoneNo() + ":" + employee.getWorksHour() + ":"
-                               + employee.getSalary());
+                               + employee.calculateSalary() + ":" + employee.isSalaryPaid());
                 data = employees.getNext();
 
             }

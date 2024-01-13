@@ -1,0 +1,136 @@
+import java.util.List;
+import java.util.ArrayList;
+
+class Employee {
+    private int employeeId;
+    private String name;
+    private String role;
+    private SalaryConfiguration salaryConfiguration;
+
+    public Employee(int employeeId, String name, String role) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.role = role;
+    }
+
+    public void setSalaryConfiguration(SalaryConfiguration salaryConfiguration) {
+        this.salaryConfiguration = salaryConfiguration;
+    }
+
+    public double calculateNetSalary() {
+        if (salaryConfiguration != null) {
+            return salaryConfiguration.calculateNetSalary();
+        } else {
+            return 0;
+        }
+    }
+}
+
+class PaymentType {
+    private String name;
+
+    public PaymentType(String name) {
+        this.name = name;
+    }
+}
+
+class PayPeriod {
+    private String startDate;
+    private String endDate;
+
+    public PayPeriod(String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+}
+
+class Earning {
+    private String name;
+    private double amount;
+
+    public Earning(String name, double amount) {
+        this.name = name;
+        this.amount = amount;
+    }
+}
+
+class Deduction {
+    private String name;
+    private double amount;
+
+    public Deduction(String name, double amount) {
+        this.name = name;
+        this.amount = amount;
+    }
+}
+
+class Tax {
+    private String name;
+    private double rate;
+
+    public Tax(String name, double rate) {
+        this.name = name;
+        this.rate = rate;
+    }
+}
+
+class SalaryConfiguration {
+    private double baseSalary;
+    private PaymentType paymentType;
+    public List<Earning> earnings;
+    private List<Deduction> deductions;
+    private List<Tax> taxes;
+
+    public SalaryConfiguration(double baseSalary, PaymentType paymentType, List<Earning> earnings,
+                               List<Deduction> deductions, List<Tax> taxes) {
+        this.baseSalary = baseSalary;
+        this.paymentType = paymentType;
+        this.earnings = earnings;
+        this.deductions = deductions;
+        this.taxes = taxes;
+    }
+
+    public double calculateNetSalary() {
+        double netSalary = baseSalary;
+
+        // Calculate earnings
+        for (Earning earning : earnings) {
+            netSalary += earning.amount;
+        }
+
+        // Deduct deductions
+        for (Deduction deduction : deductions) {
+            netSalary -= deduction.amount;
+        }
+
+        // Apply taxes
+        for (Tax tax : taxes) {
+            netSalary -= netSalary * (tax.rate / 100);
+        }
+
+        return netSalary;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create instances of the classes and set up relationships
+        Employee employee = new Employee(1, "John Doe", "Software Developer");
+        PaymentType paymentType = new PaymentType("Monthly");
+        List<Earning> earnings = new ArrayList<>();
+        earnings.add(new Earning("Overtime", 500));
+        earnings.add(new Earning("Bonus", 1000));
+        List<Deduction> deductions = new ArrayList<>();
+        deductions.add(new Deduction("Insurance", 50));
+        List<Tax> taxes = new ArrayList<>();
+        taxes.add(new Tax("Income Tax", 10));
+
+        SalaryConfiguration salaryConfig = new SalaryConfiguration(5000, paymentType, earnings, deductions, taxes);
+
+        employee.setSalaryConfiguration(salaryConfig);
+
+        // Calculate and print net salary
+        double netSalary = employee.calculateNetSalary();
+        System.out.println(employee.getname() + "'s Net Salary:RM " + netSalary);
+    }
+}
